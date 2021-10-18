@@ -1,0 +1,35 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: BathToken
+    network: optimism
+    source:
+      address: "0xeb5F29AfaaA3f44eca8559c3e8173003060e919f"
+      abi: BathToken
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.2
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - Deposit
+        - LogInit
+        - Transfer
+        - Withdraw
+      abis:
+        - name: BathToken
+          file: ./abis/BathToken.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: Deposit(uint256,address,uint256,address)
+          handler: handleDeposit
+        - event: LogInit(uint256)
+          handler: handleLogInit
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: Withdraw(uint256,address,uint256,address,uint256,address)
+          handler: handleWithdraw
+      file: ./src/mapping.ts
